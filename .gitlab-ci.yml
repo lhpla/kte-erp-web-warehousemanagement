@@ -1,0 +1,92 @@
+variables:
+  BUILDDIR: dist #打包文件名
+  PRODDIR: warehouseManagement #线上文件夹名
+  BACKUPDIR: warehouseManagement_backup #备份文件夹名
+  SOURCEDIR: /usr/share/nginx/html #线上nginx路径根据自己的nginx路径修改test&&prod /usr/local/nginx/html
+  ORTHER_SOURCEDIR: /usr/local/nginx/html
+  DEFAULT_SERVER_IP: "192.168.180.11"
+  TEST_SERVER_IP: "192.168.180.12"
+  MASTER_SERVER_IP: "47.107.62.34"
+  D_HOST: "192.168.180.10:5000"
+
+stages:
+  - preinstall
+  - install
+  - build
+  - deploy
+cache:
+  paths:
+    - node_modules
+
+preinstall-job:
+  image: $D_HOST/node:latest
+  stage: preinstall
+  only:
+    refs:
+      - master
+      - test
+      - dev
+    changes:
+      - package.json
+  script:
+    - echo "依赖发生变化,开始install"
+    - npm config get registry
+    - npm config set registry https://registry.npm.taobao.org
+    - npm install
+    - echo "end install"
+
+install-job:
+  image: $D_HOST/node:latest
+  stage: install
+  only:
+    refs:
+      - master
+      - test
+      - dev
+  script:
+    - echo "start install"
+    - if [ ! -d "./node_modules/" ];then npm install; else echo "缓存存在,跳过install"; fi
+    - echo "end install"
+
+build-job:
+  image: $D_HOST/node:latest
+  stage: build
+  only:
+    refs:
+      - master
+      - test
+      - dev
+  script:
+    - echo "build package"
+    - npm run build:${CI_COMMIT_BRANCH}
+    - echo "完成打包"
+  artifacts:
+    paths:
+      - $BUILDDIR/
+    expire_in: 2 days
+
+  dependencies:
+    - install-job
+
+deploy-job:
+  image: $D_HOST/sshpass:latest
+  stage: deploy
+  only:
+    refs:
+      - master
+      - test
+      - dev
+  before_script:
+    - echo "login target services"
+  script:
+    - echo "deploy in nginx"
+    - if [[ $CI_COMMIT_BRANCH == "master" ]]; then export DEFAULT_SERVER_IP=${MASTER_SERVER_IP} && export SOURCEDIR=${ORTHER_SOURCEDIR};fi
+    - if [[ $CI_COMMIT_BRANCH == "test" ]]; then export DEFAULT_SERVER_IP=${TEST_SERVER_IP} && export SOURCEDIR=${ORTHER_SOURCEDIR};fi
+    - sshpass -p $PASSWORD ssh -o StrictHostKeyChecking=no root@$DEFAULT_SERVER_IP rm -rf $SOURCEDIR/$BACKUPDIR/ #删除nginx下原有的备份
+    - sshpass -p $PASSWORD ssh -o StrictHostKeyChecking=no root@$DEFAULT_SERVER_IP mv $SOURCEDIR/$PRODDIR/ $SOURCEDIR/$BACKUPDIR/ #移动Nginx的main到备份文件
+    - sshpass -p $PASSWORD scp -o StrictHostKeyChecking=no -r ./$BUILDDIR/. root@$DEFAULT_SERVER_IP:$SOURCEDIR/$PRODDIR/ #复制到Nginx下main
+    - echo "end in nginx"
+  dependencies:
+    - build-job
+  after_script:
+    - echo "end in nginx"

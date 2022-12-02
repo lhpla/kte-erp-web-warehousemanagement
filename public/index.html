@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
+
+  <body>
+    <noscript>
+      <strong
+        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please
+        enable it to continue.</strong
+      >
+    </noscript>
+    <script>
+      !(function (c, i, e, b) {
+        var h = i.createElement('script')
+        var f = i.getElementsByTagName('script')[0]
+        h.type = 'text/javascript'
+        h.crossorigin = true
+        h.onload = function () {
+          try {
+            c[b] ||
+              (c[b] = new c.wpkReporter({
+                bid: 'xq30bvoj-74pi63yy',
+                plugins: [],
+              }))
+            c[b].installAll()
+          } catch (e) {
+            console.error('init wpkReporter fail', e)
+          }
+        }
+        f.parentNode.insertBefore(h, f)
+        h.src = e
+      })(window, document, 'https://g.alicdn.com/woodpeckerx/jssdk??wpkReporter.js', '__wpk')
+    </script>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>

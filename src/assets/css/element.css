@@ -1,0 +1,135 @@
+.el-aside,
+.el-menu {
+  background: #28333e;
+  border-right: none !important;
+}
+
+.el-aside {
+  transition: width 0.25s ease-in-out;
+}
+
+.el-menu--collapse .el-submenu .el-submenu__title span {
+  transition: all;
+  display: none;
+}
+
+.el-menu--collapse .el-submenu .el-submenu__title .el-icon-arrow-right {
+  transition: all;
+  display: none;
+}
+
+.el-menu-item,
+.el-submenu__title {
+  font-size: 12px;
+  color: #b9b9bc !important;
+  background: #25262e;
+}
+
+/* .el-submenu__title {
+  padding: 0 16px;
+} */
+
+.el-submenu__title:focus,
+.el-submenu__title:hover,
+.el-menu-item:hover,
+.el-submenu:hover,
+.el-menu-item.is-active {
+  outline: 0 !important;
+  color: #fff !important;
+  background: #1b1f24;
+}
+
+/* .el-menu-item {
+  padding-left: 20px !important;
+} */
+
+.el-menu-item.is-active {
+  background-color: #409eff !important;
+}
+
+/* 
+.el-textarea__inner {
+  width: 400px;
+  height: 200px;
+} */
+
+.el-upload-dragger {
+  width: auto;
+  height: auto;
+  background: none;
+  border: none;
+}
+
+.el-upload--picture-card {
+  width: 110px;
+  height: 110px;
+}
+
+.el-upload {
+  width: 110px;
+  height: 110px;
+  line-height: 110px;
+}
+
+.el-upload-list--picture-card .el-upload-list__item {
+  width: 110px;
+  height: 110px;
+  line-height: 110px;
+}
+
+.el-upload-list--picture-card .el-upload-list__item-thumbnail {
+  width: 110px;
+  height: 110px;
+  line-height: 110px;
+}
+
+.el-icon-check:before {
+  position: absolute;
+  margin: -35px 0px 0px 25px;
+}
+
+.el-tabs__nav-next,
+.el-tabs__nav-prev {
+  line-height: 34px;
+}
+
+.avatar {
+  width: 110px;
+  height: 110px;
+}
+
+.el-icon-close-tip {
+  font-size: 25px;
+}
+
+.el-input__inner {
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+}
+
+.el-dialog__header {
+  background-color: #eee;
+  padding: 20px;
+}
+
+.el-table {
+  margin-bottom: 10px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.el-pagination .el-icon-arrow-left {
+  margin: 0 auto;
+}
+
+.el-pagination .el-icon-arrow-right {
+  margin: 0 auto;
+}
